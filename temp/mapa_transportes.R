@@ -39,4 +39,4 @@ ggplot() +
   geom_sf_text(data = sf_rj_municipalities, 
                aes(label = name_muni),
                size = 2) +
-  theme_void()
+  theme()
