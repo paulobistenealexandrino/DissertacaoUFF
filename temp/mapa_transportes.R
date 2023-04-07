@@ -40,19 +40,24 @@ ggplot() +
            ylim = lat_bounds) +
   
   # Inserindo rosa-dos-ventos
-  annotation_north_arrow(location = "br", 
+  annotation_north_arrow(location = "bl", 
                          which_north = "true",
+                         style = north_arrow_fancy_orienteering,
                          height = unit(.75, "cm"),
                          width = unit(.75, "cm")) +
   # Inserindo escala
-  annotation_scale() +
+  annotation_scale(location = "br", height = unit(0.1, "cm")) +
   
   
   theme_bw() + 
   theme(axis.text = element_blank(),
-        axis.ticks = element_blank())
+        axis.ticks = element_blank(),
+        panel.grid.major = element_line(color = "grey80",
+                                        linetype = "dashed",
+                                        size = 0.5),
+        panel.background = element_rect(fill = "aliceblue"))
 
-
+ggsave("output/mapa_rio.png")
 #################################################################
 
 
