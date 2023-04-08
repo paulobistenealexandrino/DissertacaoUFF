@@ -1,11 +1,54 @@
-# Criando um base map do Rio de Janeiro
+# Criando mapa dos transportes do Rio de Janeiro
 
 
 library(tidyverse)
 library(geobr)
 library(sf)
 library(ggspatial)
+library(gtfstools)
 
+
+# Organizando os shapefiles dos transportes
+
+# Ônibus 
+# Fonte: Data.Rio | GTFS do Rio de Janeiro
+# Link: https://www.data.rio/datasets/gtfs-do-rio-de-janeiro/about
+# Lendo GTFS
+gtfs_path <- "input/data_raw/r5r/gtfs_rio-de-janeiro.zip"
+rj_gtfs <- read_gtfs(gtfs_path)
+# Pegando shapefile das linhas
+sf_onibus <- get_trip_geometry(rj_gtfs, file = "shapes")
+# Removendo arquivos auxiliares
+rm(gtfs_path, rj_gtfs)
+
+# BRT
+# Fonte: Data.Rio | Trajetos BRT
+# Link: https://www.data.rio/datasets/trajetos-brt/explore?location=-22.915687%2C-43.431850%2C11.49
+# Lendo shapefile:
+sf_brt <- st_read("input/data_raw/shapefiles/Trajetos_BRT/Trajetos_BRT.shp")
+# Filtrando linhas inoperantes
+sf_brt <- sf_brt %>%
+  filter(flg_ativa == 1)
+
+# Trem
+# Fonte: Data.Rio | Trajetos Trem
+# Link: https://www.data.rio/datasets/trajetos-trem/explore?location=-22.699543%2C-43.297792%2C9.35
+# Lendo shapefile:
+sf_trem <- st_read("input/data_raw/shapefiles/Trajetos_Trem/Trajetos_Trem.shp")
+
+# VLT
+# Fonte: Data.Rio | Trajetos VLT
+# Link: https://www.data.rio/datasets/trajeto-vlt/explore?location=-22.912172%2C-43.192131%2C14.20
+# Lendo shapefile:
+sf_vlt <- st_read("input/data_raw/shapefiles/Trajetos_VLT/Trajetos_VLT.shp")
+
+# Atribuindo cores para cada um dos modais
+modes_colors <- c("Ônibus Convencional" = "#999999",
+                  "BRT" = "#E69F00",
+                  "Trem" = "#009E73",
+                  "VLT" = "#0072B2")
+
+# Montando o basemap
 
 # Baixando os municípios do Estado do RJ
 municipios_rj <- read_municipality(code_muni = 33)
@@ -35,6 +78,19 @@ ggplot() +
   # Destacando a cidade do Rio
   geom_sf(data  = municipios_rj %>% 
             filter(name_muni == "Rio De Janeiro")) +
+  
+  # Inserindo as camadas com os transportes
+  geom_sf(data = sf_onibus, aes(color = "Ônibus Convencional")) +
+  geom_sf(data = sf_brt, linewidth = 0.75, aes(color = "BRT")) +
+  geom_sf(data = sf_trem, linewidth = 0.75, aes(color = "Trem")) +
+  geom_sf(data = sf_vlt, linewidth = 0.75, aes(color = "VLT")) +
+  # Atribuindo a escala com cores
+  scale_color_manual(values = modes_colors,
+                     breaks = c("Ônibus Convencional",
+                                "BRT",
+                                "Trem",
+                                "VLT")) +
+  
   # Centralizando o mapa no Rio
   coord_sf(xlim = lon_bounds, 
            ylim = lat_bounds) +
@@ -47,67 +103,15 @@ ggplot() +
                          width = unit(.75, "cm")) +
   # Inserindo escala
   annotation_scale(location = "br", height = unit(0.1, "cm")) +
+  # Alterando nome da legenda
+  labs(color = "Modal") +
   
-  
+  # Ajustando tema
   theme_bw() + 
   theme(axis.text = element_blank(),
         axis.ticks = element_blank(),
         panel.grid.major = element_line(color = "grey80",
                                         linetype = "dashed",
                                         size = 0.5),
-        panel.background = element_rect(fill = "aliceblue"))
-
-ggsave("output/mapa_rio.png")
-#################################################################
-
-
-# Limites Geográficos dos municípios do Estado do RJ
-sf_rj_municipalities <- read_municipality(code_muni = 33)
-
-# Limites Geográficos Rio de Janeiro
-sf_rio <- sf_rj_municipalities %>%
-  filter(name_muni == "Rio De Janeiro")
-
-# Shapefiles dos transportes
-
-# Trem
-sf_trem <- st_read("input/data_raw/shapefiles/Trajetos_Trem/Trajetos_Trem.shp")
-# VLT
-sf_vlt <- st_read("input/data_raw/shapefiles/Trajetos_VLT/Trajetos_VLT.shp")
-# Ônibus
-sf_onibus <- st_read("input/data_raw/shapefiles/Trajetos_Onibus/Trajetos_Onibus.shp")
-# BRT
-sf_brt <- st_read("input/data_raw/shapefiles/Trajetos_BRT/Trajetos_BRT.shp")
-
-# Tentando fazer mapa com ggspatial
-ggplot() +
-  
-  layer_spatial(sf_rio) +
-  
-  annotation_spatial(sf_rj_municipalities) +
-  annotation_spatial(sf_onibus, color = "grey") +
-  annotation_spatial(sf_brt, linetype = "dotdash", color = "green") +
-  annotation_spatial(sf_trem, linetype = "dashed", color = "red") +
-  annotation_spatial(sf_vlt, linetype = "dotted", color = "blue") +
-  
-  annotation_scale(location = "bl") +
-  annotation_north_arrow(location = "br", which_north = "true") +
-  
-  theme_void()
-  
-
-# Plotando os shapefiles
-
-
-ggplot() +
-  geom_sf(data = sf_rj_municipalities) +
-  geom_sf(data = sf_onibus, color = "grey") +
-  geom_sf(data = sf_brt, linetype = "dotdash", color = "green") +
-  geom_sf(data = sf_trem, linetype = "dashed", color = "red") +
-  geom_sf(data = sf_vlt, linetype = "dotted", color = "blue") +
-  coord_sf(xlim = lon_bounds, 
-           ylim = lat_bounds, expand = FALSE) +
-  annotation_scale(location = "bl") +
-  annotation_north_arrow(location = "tl", which_north = "true") +
-  
-  theme_bw()
+        panel.background = element_rect(fill = "aliceblue"),
+        legend.position = "bottom")
