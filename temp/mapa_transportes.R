@@ -43,9 +43,10 @@ sf_trem <- st_read("input/data_raw/shapefiles/Trajetos_Trem/Trajetos_Trem.shp")
 sf_vlt <- st_read("input/data_raw/shapefiles/Trajetos_VLT/Trajetos_VLT.shp")
 
 # Atribuindo cores para cada um dos modais
-modes_colors <- c("Ônibus Convencional" = "#999999",
-                  "BRT" = "#E69F00",
-                  "Trem" = "#009E73",
+modes_colors <- c("Ônibus Convencional" = "#BB8FCE",
+                  "BRT" = "#009E73",
+                  "Trem" = "#E69F00",
+                  "Metrô" = "#D55E00",
                   "VLT" = "#0072B2")
 
 # Montando o basemap
@@ -89,6 +90,7 @@ ggplot() +
                      breaks = c("Ônibus Convencional",
                                 "BRT",
                                 "Trem",
+                                "Metrô",
                                 "VLT")) +
   
   # Centralizando o mapa no Rio
