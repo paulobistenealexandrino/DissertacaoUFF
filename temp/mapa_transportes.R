@@ -36,11 +36,18 @@ sf_brt <- sf_brt %>%
 # Lendo shapefile:
 sf_trem <- st_read("input/data_raw/shapefiles/Trajetos_Trem/Trajetos_Trem.shp")
 
+# Metro
+# Fonte: Data.Rio | Estações Metrô
+# Link: https://www.data.rio/datasets/esta%C3%A7%C3%B5es-metr%C3%B4/explore
+# Utilizei o script "temp/gerar_shapefile_metro.R"
+sf_metro <- read_rds("input/data_processed/sf_metro.RDS")
+
 # VLT
 # Fonte: Data.Rio | Trajetos VLT
 # Link: https://www.data.rio/datasets/trajeto-vlt/explore?location=-22.912172%2C-43.192131%2C14.20
 # Lendo shapefile:
 sf_vlt <- st_read("input/data_raw/shapefiles/Trajetos_VLT/Trajetos_VLT.shp")
+
 
 # Atribuindo cores para cada um dos modais
 modes_colors <- c("Ônibus Convencional" = "#BB8FCE",
@@ -84,6 +91,7 @@ ggplot() +
   geom_sf(data = sf_onibus, aes(color = "Ônibus Convencional")) +
   geom_sf(data = sf_brt, linewidth = 0.75, aes(color = "BRT")) +
   geom_sf(data = sf_trem, linewidth = 0.75, aes(color = "Trem")) +
+  geom_sf(data = sf_metro, linewidth = 0.75, aes(color = "Metrô")) +
   geom_sf(data = sf_vlt, linewidth = 0.75, aes(color = "VLT")) +
   # Atribuindo a escala com cores
   scale_color_manual(values = modes_colors,
