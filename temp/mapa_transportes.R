@@ -50,16 +50,53 @@ sf_vlt <- st_read("input/data_raw/shapefiles/Trajetos_VLT/Trajetos_VLT.shp")
 
 
 # Atribuindo cores para cada um dos modais
-modes_colors <- c("Ônibus Convencional" = "#BB8FCE",
+modes_colors <- c("Ônibus Convencional" = "slategray",
                   "BRT" = "#009E73",
                   "Trem" = "#E69F00",
-                  "Metrô" = "#D55E00",
+                  "Metrô" = "red",
                   "VLT" = "#0072B2")
 
 # Montando o basemap
 
 # Baixando os municípios do Estado do RJ
 municipios_rj <- read_municipality(code_muni = 33)
+
+# Pontos de referência
+bairros  <- st_read("input/data_raw/shapefiles/Limite_de_Bairros/Limite_de_Bairros.shp")
+
+bairros_filtro <- c("Bangu",
+                    "Barra da Tijuca",
+                    "Campo Grande",
+                    "Centro",
+                    "Guaratiba",
+                    "Inhaúma",
+                    "Jacarepaguá",
+                    "Madureira",
+                    "Méier",
+                    "Pavuna",
+                    "Penha",
+                    "Ramos",
+                    "Santa Cruz",
+                    "Tijuca",
+                    "Copacabana",
+                    "Rocinha",
+                    "Maré")
+
+ilha_gov <- bairros %>%
+  group_by(rp) %>%
+  summarise(geometry = st_union(geometry)) %>%
+  filter(rp == "Ilha do Governador") %>%
+  rename(nome = rp) %>%
+  st_centroid()
+  
+
+pts_referencia <- bairros %>%
+  st_centroid() %>%
+  filter(nome %in% bairros_filtro) %>%
+  select(nome, geometry) %>%
+  bind_rows(ilha_gov)
+
+
 
 # Pegando o centroide da cidade do Rio para centralizar mapa
 zoom_to <- municipios_rj %>% 
@@ -100,7 +137,8 @@ ggplot() +
                                 "Trem",
                                 "Metrô",
                                 "VLT")) +
-  
+  # Pontos de referência
+  geom_sf_text(data = pts_referencia, size = 3, aes(label = nome)) +
   # Centralizando o mapa no Rio
   coord_sf(xlim = lon_bounds, 
            ylim = lat_bounds) +
@@ -119,9 +157,13 @@ ggplot() +
   # Ajustando tema
   theme_bw() + 
   theme(axis.text = element_blank(),
+        axis.title = element_blank(),
         axis.ticks = element_blank(),
         panel.grid.major = element_line(color = "grey80",
                                         linetype = "dashed",
                                         size = 0.5),
         panel.background = element_rect(fill = "aliceblue"),
-        legend.position = "bottom")
+        legend.position = c(0.5, 0.05)) +
+  guides(col = guide_legend(direction = "horizontal"))
+
+# Proporção W: 960, H: 497

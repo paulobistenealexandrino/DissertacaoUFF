@@ -1,21 +1,10 @@
-# Associa hexágonos a Regiões de Planejamento
-
-
-library(tidyverse)
-library(sf)
-library(geobr)
-library(aopdata)
-library(gridExtra)
-
-
 # Baixa o shapefile dos bairros do Rio
 bairros  <- st_read("input/data_raw/shapefiles/Limite_de_Bairros/Limite_de_Bairros.shp")
 # Agrega por RP
 regioes_planejamento <- bairros %>%
-  group_by(rp) %>%
+  group_by(nome) %>%
   summarise(geometry = st_union(geometry))
-# Remove o dataset original
-rm(bairros)
+
 
 
 # Baixa a malha hexagonal do RJ
@@ -61,8 +50,8 @@ rm(landuse_rp, landuse_rp_aux, nao_associados, repetidos)
 # Construindo dataset para análise
 regioes_plan_sociodemograficos <- landuse_regioes_plan %>%
   st_drop_geometry() %>%
-  select(rp, P001, T001, R001) %>%
-  group_by(rp) %>%
+  select(nome, P001, T001, R001) %>%
+  group_by(nome) %>%
   summarise(populacao = sum(P001),
             postos_trabalho = sum(T001),
             renda_media = mean(R001)) %>%
@@ -76,29 +65,27 @@ regioes_planejamento <- regioes_planejamento %>%
   left_join(regioes_plan_sociodemograficos) %>%
   arrange(desc(populacao))
 
+# Checando exclusões
+sum(landuse_rio$P001) - sum(landuse_regioes_plan$P001)
+sum(landuse_rio$T001) - sum(landuse_regioes_plan$T001)
+
+# Bairros
+rp <- bairros %>%
+  group_by(rp) %>%
+  summarise(geometry = st_union(geometry))
+
 # Construindo mapa
-map1 <- ggplot(regioes_planejamento) +
-  geom_sf(aes(fill = percent_postos)) +
-  geom_sf_text(data = st_centroid(regioes_planejamento),
-               aes(label = rp),
-               size = 2,
-               color = "white") +
+ggplot(regioes_planejamento) +
+  geom_sf(aes(fill = percent_postos), color = NA) +
+  geom_sf(data = rp, color  = "white", fill = NA) +
+  geom_sf_text(data = rp, color = "white", size = 2, aes(label = rp)) +
   theme_void()
 
-map2 <- ggplot(regioes_planejamento) +
-  geom_sf(aes(fill = percent_populacao)) +
-  geom_sf_text(data = st_centroid(regioes_planejamento),
-               aes(label = rp),
-               size = 2,
-               color = "white") +
-  theme_void()
-
-grid.arrange(map1, map2)
-
-
-bairros %>%
-  group_by(regiao_adm) %>%
-  summarise(geometry = st_union(geometry)) %>%
-  ggplot() +
-  geom_sf() +
-  geom_sf_text(data  = )
+ggplot(regioes_planejamento) +
+  geom_sf(aes(fill = populacao/10^3), color = NA) +
+  geom_sf(data = rp, color  = "white", fill = NA) +
+  geom_sf_text(data = rp, color = "white", size = 2, aes(label = rp)) +
+  labs(fill = "População por Bairro (em milhares)") + 
+  theme_void() +
+  theme(legend.position = "bottom")
+  
