@@ -47,7 +47,7 @@ landuse_rio <- landuse_rio %>%
 
 
 # Construindo mapa
-ggplot() +
+gg_empregos <- ggplot() +
   
   # Plotando os municípios do Estado
   geom_sf(data  = municipios_rj, 
@@ -69,7 +69,12 @@ ggplot() +
   geom_sf(data = landuse_rio, 
           aes(fill = densidade_trab),
           color = NA) +
-  scale_fill_gradientn(colors = c(NA,"#ff9c44", "#ff7b2f", "#ff5419", "#ff0000"),
+  scale_fill_gradientn(colors = c(NA,
+                                  "#ff9c44",
+                                  "#ff7533",
+                                  "#ff4e22",
+                                  "#ff2711",
+                                  "#ff0000"),
                        guide = guide_colorbar(direction = "horizontal")) +
   
   # Destacando a cidade do Rio
@@ -78,18 +83,18 @@ ggplot() +
           fill = NA) +
   
   # Pontos de referência
-  geom_sf_text(data = pts_referencia, size = 2, aes(label = nome)) +
+  # geom_sf_text(data = pts_referencia, size = 2, aes(label = nome)) +
   
   # Centralizando o mapa no Rio
   coord_sf(xlim = zoom_bounds(coords = "lon"), 
            ylim = zoom_bounds(coords = "lat")) +
   
   # Inserindo rosa-dos-ventos
-  annotation_north_arrow(location = "bl", 
-                         which_north = "true",
-                         style = north_arrow_fancy_orienteering,
-                         height = unit(.75, "cm"),
-                         width = unit(.75, "cm")) +
+  #annotation_north_arrow(location = "bl", 
+  #                       which_north = "true",
+  #                       style = north_arrow_fancy_orienteering,
+  #                       height = unit(.75, "cm"),
+  #                       width = unit(.75, "cm")) +
   # Inserindo escala
   annotation_scale(location = "br", height = unit(0.1, "cm")) +
   
@@ -108,4 +113,15 @@ ggplot() +
         legend.position = c(0.5, 0.925),
         rect = element_rect(fill = NA))
 
-  
+# Removendo variáveis
+remover <- c("landuse_rio",
+             "municipios_rj",
+             "pts_referencia",
+             "sf_brt",
+             "sf_metro",
+             "sf_onibus",
+             "sf_trem",
+             "sf_vlt",
+             "path",
+             "zoom_bounds")
+rm(list = c(remover,"remover"))

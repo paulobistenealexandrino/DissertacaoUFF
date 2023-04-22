@@ -69,12 +69,7 @@ gg_populacao <- ggplot() +
   geom_sf(data = landuse_rio, 
           aes(fill = densidade_pop),
           color = NA) +
-  scale_fill_gradientn(colors = c(NA,
-                                  "#ff9c44",
-                                  "#ff7533",
-                                  "#ff4e22",
-                                  "#ff2711",
-                                  "#ff0000"),
+  scale_fill_gradientn(colors = c(NA, inferno(10)),
                        guide = guide_colorbar(direction = "horizontal")) +
   
   # Destacando a cidade do Rio

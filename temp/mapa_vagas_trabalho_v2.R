@@ -1,4 +1,4 @@
-# Criando um mapa de calor da densidade populacional do Rio de Janeiro
+# Criando um mapa de calor das vagas de emprego no Rio de Janeiro
 
 
 library(tidyverse)
@@ -40,14 +40,14 @@ municipios_rj <- readRDS(paste0(path,"municipios_rj.RDS"))
 landuse_rio <- readRDS(paste0(path,"landuse_rio.RDS"))
 
 
-# Densidade populacional em mil hab/km2
+# Densidade das oportunidades de trabalho em mil vagas/km2
 # Área dos hexágonos: 0.1083603 km2
 landuse_rio <- landuse_rio %>%
-  mutate(densidade_pop = P001/(0.1083603*10^3))
+  mutate(densidade_trab = T001/(0.1083603*10^3))
 
 
 # Construindo mapa
-gg_populacao <- ggplot() +
+gg_empregos <- ggplot() +
   
   # Plotando os municípios do Estado
   geom_sf(data  = municipios_rj, 
@@ -65,16 +65,11 @@ gg_populacao <- ggplot() +
   geom_sf(data = sf_metro, color = "azure4") +
   geom_sf(data = sf_vlt, color = "azure4") +
   
-  # Dados de densidade populacional
+  # Dados de densidade trabalho
   geom_sf(data = landuse_rio, 
-          aes(fill = densidade_pop),
+          aes(fill = densidade_trab),
           color = NA) +
-  scale_fill_gradientn(colors = c(NA,
-                                  "#ff9c44",
-                                  "#ff7533",
-                                  "#ff4e22",
-                                  "#ff2711",
-                                  "#ff0000"),
+  scale_fill_gradientn(colors = c(NA, inferno(10)),
                        guide = guide_colorbar(direction = "horizontal")) +
   
   # Destacando a cidade do Rio
@@ -90,16 +85,16 @@ gg_populacao <- ggplot() +
            ylim = zoom_bounds(coords = "lat")) +
   
   # Inserindo rosa-dos-ventos
-  annotation_north_arrow(location = "bl", 
-                         which_north = "true",
-                         style = north_arrow_fancy_orienteering,
-                         height = unit(.75, "cm"),
-                         width = unit(.75, "cm")) +
+  #annotation_north_arrow(location = "bl", 
+  #                       which_north = "true",
+  #                       style = north_arrow_fancy_orienteering,
+  #                       height = unit(.75, "cm"),
+  #                       width = unit(.75, "cm")) +
   # Inserindo escala
-  #annotation_scale(location = "br", height = unit(0.1, "cm")) +
+  annotation_scale(location = "br", height = unit(0.1, "cm")) +
   
   # Editando legenda
-  labs(fill = "Densidade Populacional (milhares/km²)") +
+  labs(fill = "Densidade de Postos de Trabalho (milhares/km²)") +
   
   # Editando tema
   theme_bw() + 
