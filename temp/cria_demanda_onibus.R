@@ -33,4 +33,5 @@ ggplot(demanda_dias_uteis, aes(x = DATA, y = TOTPAS/10^6)) +
   xlab("Ano") +
   ylab("Passageiros Transportados (milhões)") +
   theme_classic()  +
-  theme(legend.position = "top")
+  theme(legend.position = "top",
+        legend.title = element_blank())
