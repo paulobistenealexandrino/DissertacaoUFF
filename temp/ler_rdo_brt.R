@@ -5,6 +5,7 @@ library(tidyverse)
 library(readxl)
 library(lubridate)
 
+
 # Fonte dos dados:
 # Relatório Diário de Operações (2015-2022)
 # Disponível em: https://www.data.rio/documents/PCRJ::relat%C3%B3rio-di%C3%A1rio-de-opera%C3%A7%C3%B5es-rdo-sppo-%C3%B4nibus-comum-e-brt/about
@@ -87,7 +88,26 @@ for (ano in serie_historica) {
   
 }
 
+# Remover variáveis
+rm(list = ls()[ls() != "rdo"])
+
 # Salvando arquivo
-write.csv2(rdo, 
-           file = "input/data_processed/rdo_brt_2015a2022.csv",
+# write.csv2(rdo, 
+#           file = "input/data_processed/rdo_brt_2015a2022.csv",
+#           row.names = FALSE)
+
+# Série histórica RDO BRT
+rdo_brt <- rdo %>%
+  select(ANO, MES, DIA, TOTAL_PAX_TRANSPORTADO) %>%
+  filter(!(is.na(ANO)| is.na(MES) | is.na(DIA))) %>%
+  mutate(DATA = ymd(paste(ANO, MES, DIA, sep = "-")),
+         TOTAL_PAX_TRANSPORTADO = as.numeric(gsub(" ", "", TOTAL_PAX_TRANSPORTADO))) %>% 
+  filter(!is.na(DATA)) %>% 
+  group_by(DATA) %>%
+  summarise(SISTEMA = "BRT",
+            TOTAL_PAX_TRANSPORTADO = sum(TOTAL_PAX_TRANSPORTADO))
+
+# Salvando arquivo
+write.csv2(rdo_brt, 
+           file = "input/data_processed/rdo_brt.csv",
            row.names = FALSE)
