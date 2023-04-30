@@ -37,7 +37,7 @@ destiny_points <- read.csv(file.path(folder,"destiny_points.csv"))
       '16-01-2023 06:00:00',
       format = '%d-%m-%Y %H:%M:%S'
     ),
-    max_walk_dist = 1000,
+    max_walk_time = 30,
     max_trip_duration = 180,
     time_window = 120,
     verbose = FALSE,
