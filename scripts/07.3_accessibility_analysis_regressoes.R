@@ -8,7 +8,7 @@ library(spatialreg)
 library(stargazer)
 
 options(scipen = 10) # Ajusta a notação científica
-set.seed(42) # Define os valores aleatórios
+set.seed(42)
 
 
 # Lendo a base de dados de uso do solo já com os indicadores
