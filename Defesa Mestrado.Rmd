@@ -1,0 +1,244 @@
+---
+title: "Políticas de Transporte Público e Acessibilidade Urbana"
+subtitle: "O Caso da Cidade do Rio de Janeiro"
+author: "Paulo Alexandrino"
+institute: 
+  - "PPGE-UFF"
+date: "Defesa de Dissertação, 1 set. 2023"
+output:
+  beamer_presentation:
+    theme: "Copenhagen"
+    colortheme: "default"
+header-includes:
+  - \AtBeginSection{}
+  - \setbeamertemplate{page number in head/foot}[totalframenumber]
+---
+
+# Considerações Iniciais
+
+## Banca Examinadora
+
+### Orientadoras
+- Prof.ª Dr.ª Danielle Carusi Machado - UFF
+- Prof.ª Dr.ª Valeria Lucia Pero - UFRJ
+
+### Convidados
+- Prof. Dr. André Albuquerque Sant'Anna - UFF
+- Prof.ª Drª Ana Carolina da Cruz Lima - UFRJ
+
+## Estrutura da Dissertação
+
+- Introdução
+- Capítulo 1: Referencial Teórico e Empírico
+- Capítulo 2: Contextualização
+- Capítulo 3: Dados e Métodos
+- Capítulo 4: Resultados
+- Considerações Finais
+
+## Problema de Pesquisa
+
+Em que medida a política de regularização de linhas de ônibus implementada a partir do Acordo Judicial entre a Prefeitura do Rio de Janeiro, os concessionários e o Ministério Público melhorou o acesso a oportunidades de emprego de áreas socialmente vulneráveis da cidade do Rio de Janeiro?
+
+## Objetivos
+
+### Geral
+
+Analisar o efeito distributivo do retorno de 64 linhas de ônibus entre junho e dezembro de 2022 sobre o acesso a oportunidades de emprego na cidade do Rio de Janeiro
+
+### Específicos
+
+- Apresentar um panorama sobre a distribuição espacial de características sociodemográficas e da infraestrutura de transportes da cidade
+- Estimar indicadores cumulativos de oportunidades de emprego para dois cenários: com e sem as linhas retomadas
+- Estimar os efeitos distributivos socioespaciais da política implementada
+
+# Referencial Teórico e Empírico
+
+## Referencial Teórico
+
+- Facilidade de alcançar oportunidades espacialmente distribuídas (Hansen, 1959; Páez, Scott e Morency, 2012)
+
+- Acessibilidade (Miller, 2018):
+
+  - Varia de acordo com a atividade de interesse
+  - Combina facilidade de chegar com a atratividade da atividade
+  - Medida de deslocamentos potenciais
+  - Está associada à demanda por deslocamentos e as escolhas de localização
+
+- Como variável econômica relaciona-se com emprego, renda e bem-estar (Banister e Berechman, 2001)
+
+- Acessibilidade reforça e é reforçada por desigualdades socioespaciais (Pereira et al., 2020)
+
+## Referencial Teórico
+
+- Diferenciações importantes:
+
+  - Acessibilidade x “Microacessibilidade” (Pereira et al., 2020)
+  - Acessibilidade x Mobilidade (Miller, 2018)
+
+- Medidas de Acessibilidade (Handy e Niemeyer, 1997):
+
+  - Medidas cumulativas (*cumulative opportunities measures*)
+  - Medidas gravitacionais (*gravity-based measures*)
+  - Medidas de utilidade (*utility-based measures*)
+
+## Referencial Empírico
+
+- Melhorar indicadores de acessibilidade é objetivo comum às políticas de transportes (Wee, 2016)
+
+- Utilizados como métrica de avaliação de intervenções de transportes (Pereira et al., 2020):
+  - Ex-ante: etapas preliminares de planejamento
+  - Ex-post: avaliações de “impacto”
+
+- Aplicações:
+
+  - Minneapolis e St. Paul (Fan, Guthrie e Levison, 2012; Guthrie, Fan e Das, 2017)
+  - Amsterdam (Conway, Byrd e Linden, 2017)
+  - Singapura (Conway, Byrd e Eggermond, 2018)
+  - Rio de Janeiro (Pereira, Bannister e Schwanen, 2019)
+  - Fortaleza (Braga et al., 2022)
+  
+
+# Contextualização
+
+## Distribuição Espacial de Características Sociodemográficas
+
+![]("C:/Users/paulo/OneDrive/Documentos/DissertacaoUFF/output/apresentacao/populacao.png")
+
+## Distribuição Espacial de Características Sociodemográficas
+
+![]("C:/Users/paulo/OneDrive/Documentos/DissertacaoUFF/output/apresentacao/emprego.png")
+
+## Distribuição Espacial de Características Sociodemográficas
+
+![]("C:/Users/paulo/OneDrive/Documentos/DissertacaoUFF/output/apresentacao/renda.png")
+
+## Distribuição Espacial de Características Sociodemográficas
+
+![]("C:/Users/paulo/OneDrive/Documentos/DissertacaoUFF/output/apresentacao/raca.png")
+
+## Infraestrutura de Transporte Público
+
+![]("C:/Users/paulo/OneDrive/Documentos/DissertacaoUFF/output/mapa_transportes.png")
+
+## Evolução Histórica do Sistema de Ônibus (2010-2022)
+
+![]("C:/Users/paulo/OneDrive/Documentos/DissertacaoUFF/output/demanda_anual.png"){width=90%}
+
+# Dados e Métodos
+
+## Contrução de Cenários via Software de Roteamento
+
+### Fontes de Dados (*inputs*)
+
+- Oportunidades de Trabalho - Rais (2019) via *aopdata*
+- Dados sociodemográficos - Censo (2010) via *aopdata*
+- GTFS - SMTR (2023)
+- Malha viária - OSM (2023) via *Hot Export Tool*
+
+### Cenários
+
+- Antes: Sem 64 linhas retomadas
+- Depois: Com 64 linhas retomadas
+
+## Contrução de Cenários via Software de Roteamento
+
+### Parâmetros
+- Pontos de Origem: População > 0 (n = 6.392)
+- Pontos de Destino: Op. Emprego > 0 (n = 4.991)
+- Modos de Deslocamento: Caminhada e/ou Transporte Público
+- Dia de Referência: 16/01/2023
+- Horário de Partida: 6:00
+- Janela de Partida: 120 min
+- Duração Máxima: 180 min
+- Tempo Máximo Caminhada: 30 min
+
+## Métricas e Modelo
+
+### Medida Cumulativa de Oportunidades
+
+$$ A_i = \sum_j a_jf(t_{ij}) $$
+$$ f(t_{ij}) = \begin{cases}
+1, & \text{ se } \; t_{ij} \leq T \\
+0, & \text{ se } \; t_{ij} >  T
+\end{cases} $$ 
+
+### Porção de Empregos Acessíveis
+
+$$ A_{i}\% = 100 \times \frac{A_i}{O}$$
+
+## Métricas e Modelo
+
+### Ganho de Acessibilidade
+
+$$ RA_i = \frac{A_{i_{1}}}{A_{i_{0}}} $$
+
+### Modelo Durbin Espacial
+
+$$ y = \rho Wy + X\beta + WX \theta + \varepsilon $$
+$$ \ln(RA_i) = \beta_0 + \beta_1 \ln(I_i) + \beta_2 \ln(P_i) + \beta_3 \ln(J_i) + \varepsilon $$
+
+# Resultados
+
+## Proporção de empregos acessíveis em até 60 min (Depois)
+
+![]("C:/Users/paulo/OneDrive/Documentos/DissertacaoUFF/output/Resultados/acessibilidade.png"){width=90%}
+
+## Proporção de empregos acessíveis em até 60 min
+
+![]("C:/Users/paulo/OneDrive/Documentos/DissertacaoUFF/output/Resultados/percentual_empregos_acessiveis.png"){width=90%}
+
+## Clusters bivariados LISA para renda domiciliar per capita média e ganho de acessibilidade
+
+![]("C:/Users/paulo/OneDrive/Documentos/DissertacaoUFF/output/Resultados/lisa_clusters.png"){width=90%}
+
+## Efeitos totais do modelo espacial Durbin
+
+![]("C:/Users/paulo/OneDrive/Documentos/DissertacaoUFF/output/Resultados/regressao.png")
+
+# Considerações Finais
+
+## Considerações Finais
+
+- Maiores proporções de empregos acessíveis próximos ao Centro e à infraestrutura de transportes
+- Locais de baixa renda que obtiveram ganhos de acessibilidade acima da média localizam-se em regiões consideradas prioritárias para política estudada
+- Regressão mostra relação inverso entre ganho de acessibilidade e renda
+- A política teve um pequeno, mas significativo, efeito sobre acessibilidade principalmente áreas de mais baixa renda
+
+## Limitações
+
+- Uso do Censo (2010) e Rais (2019)
+- Resultados são potenciais
+- Futuros trabalho devem incorporar dados de GPS
+
+## OBRIGADO!
+
+## Referências {.smaller}
+
+- BANISTER, D.; BERECHMAN, Y. Transport investment and the promotion of economic growth. Journal of Transport Geography, v. 9, n. 1, p. 209-218, 2001.
+- BRAGA, C.; TOMASIELLO, D.; HERSZENHUT, D.; OLIVEIRA, J.; PEREIRA, R. Impactos da expansão do metrô de Fortaleza sobre o acesso a oportunidades de emprego, saúde e educação. Texto para Discussão, n. 2767. Brasília: Ipea, 2022.
+- CONWAY, M.; BYRD, A.; EGGERMOND, M. Accounting for uncertainty and variation in accessibility metrics for public transport sketch planning. Journal of Transport and Land Use, v. 11, n. 1, p. 541-558, 2018.
+
+
+## Referências {.smaller}
+
+- CONWAY, M.; BYRD, A.; LINDEN, M. Evidence-Based Transit and Land Use Sketch Planning Using Interactive Accessibility Methods on Combined Schedule and Headway-Based Networks. Transportation Research Record: Journal of the Transportation Research Board, v. 2653, n. 1, p. 45-53, 2017.
+- FAN, Y.; GUTHRIE, A.; LEVINSON, D. Impact of light rail implementation on labor market accessibility: A transportation equity perspective. Journal of Transport and Land Use, v. 5, n. 3, 31 dez. 2012.
+
+
+## Referências {.smaller}
+
+- GUTHRIE, A.; FAN, Y.; DAS, K. Accessibility scenario analysis of a hypothetical future transit network: Social equity implications of a General Transit Feed Specification-based sketch planning tool. Transportation Research Record: Journal of the Transportation Research Board, v. 2671, n. 1, p. 1-9, 2017.
+- HANDY, S.; NIEMEIER, D. Measuring accessibility: an exploration of issues and alternatives. Environment and Planning A: Economy and Space, v. 29, n. 7, p. 1175-1194, 1997.
+- HANSEN, W. How accessibility shapes land use. Journal of the American Institute of Planners, v. 25, n. 2, p. 73-76, 1959.
+
+## Referências {.smaller}
+
+- MILLER, E. Accessibility: measurement and application in transportation planning. Transport Reviews, v. 38, n. 5, p. 551-555, 2018.
+- PÁEZ, A.; SCOTT, D. M.; MORENCY, C. Measuring accessibility: positive and normative implementations of various accessibility indicators. Journal of Transport Geography, v. 25, p. 141–153, 2012.
+- PEREIRA, R.; BANISTER, D.; SCHWANEN, T.; WESSEL, N. Distributional effects of transport policies on inequalities in access to opportunities in Rio de Janeiro. Journal of Transport and Land Use, v. 12, n. 1, 2019.
+
+## Referências {.smaller}
+
+- PEREIRA, R.; BRAGA, C.; SERRA, B.; NADALIN, V. Desigualdades socioespaciais de acesso a oportunidades nas cidades brasileiras - 2019. Texto para Discussão, n. 2535. Brasília: Ipea, 2020.
+- WEE, B. Accessible accessibility research challenges. Journal of Transport Geography, v. 51, n. 1, p. 9-16, 2016.
+
